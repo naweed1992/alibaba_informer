@@ -1,21 +1,10 @@
 from requests import get
 from json import loads
-import smtplib
 from time import sleep
-from config import Config
+from utils import send_email
 
 
 class Alibaba:
-    @staticmethod
-    def send_email(message: str, target_mail: str):
-        s = smtplib.SMTP('smtp.gmail.com:587')
-        s.ehlo()
-        s.starttls()
-        s.ehlo()
-        s.login(Config.mail_user, Config.mail_pass)
-        # print(message)
-        s.sendmail(Config.mail_user, target_mail, message)
-        s.quit()
 
     @staticmethod
     def get_ticket_info(origin_city_code: str = '26310000',
@@ -55,7 +44,7 @@ class Alibaba:
                             result1 = result2[0] + "-" + result2[1]
                         except:
                             pass
-                        self.send_email(f'{date} and time {result1}', target_mail)
+                        send_email(f'{date} and time {result1}', target_mail)
                 except Exception as e:
                     pass
                     # self.send_email(f"error is {e}", target_mail)

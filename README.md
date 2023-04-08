@@ -1,4 +1,4 @@
-# Alibaba Bus Ticket Informer
+# Alibaba and Safar724 Bus Ticket Informer
 
 ## Install
 #### 1. install requirements and virtual environment
