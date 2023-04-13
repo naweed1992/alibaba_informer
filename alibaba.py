@@ -2,6 +2,7 @@ from requests import get
 from json import loads
 from time import sleep
 from utils import send_email
+from db import sent_notifications
 
 
 class Alibaba:
@@ -44,7 +45,9 @@ class Alibaba:
                             result1 = result2[0] + "-" + result2[1]
                         except:
                             pass
-                        send_email(f'{date} and time {result1}', target_mail)
+                        if f"{date}+{result1}+{target_mail}" not in sent_notifications:
+                            send_email(f'{date} and time {result1}', target_mail)
+                            sent_notifications.add(f"{date}+{result1}+{target_mail}")
                 except Exception as e:
                     pass
                     # self.send_email(f"error is {e}", target_mail)

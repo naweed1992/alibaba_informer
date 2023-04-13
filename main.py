@@ -2,9 +2,9 @@ from alibaba import Alibaba
 from safar724 import Safar724
 import uvicorn
 from multiprocessing import Process
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from schema import SearchConfig
-from db import fake_db
+from db import fake_db, temp_db
 
 app = FastAPI(title="Alibaba and Safar724 FastApi App",
               debug=False,
@@ -33,6 +33,9 @@ def send_mail_if_ticket_available(form_data: SearchConfig):
                                                                                obj.get('expected_time'),
                                                                                obj.get('target_mail')))
     process.start()
+    temp_db.update({
+        obj.get("target_mail"): process
+    })
     return True
 
 
@@ -46,6 +49,25 @@ def get_city_codes_safar724():
     safar724 = Safar724()
     cities = safar724.get_city_codes_from_api()
     return cities
+
+
+@app.get("/running_processes", status_code=200)
+def get_running_processes():
+    result = dict()
+    for key, value in temp_db.items():
+        result.update({
+            key: value.pid
+        })
+    return result
+
+
+@app.delete("/kill_process", status_code=204)
+def kill_running_process(email):
+    if email not in temp_db:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="email not found")
+    process = temp_db.get(email)
+    process.terminate()
+    temp_db.pop(email)
 
 
 if __name__ == "__main__":

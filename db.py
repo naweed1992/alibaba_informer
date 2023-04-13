@@ -8,3 +8,7 @@ fake_db = {
     "ahvaz": "36310000",
     "mashhad": "31310000"
 }
+
+temp_db = dict()
+
+sent_notifications = set()
