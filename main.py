@@ -60,7 +60,11 @@ def get_running_processes():
     result = dict()
     for key, value in temp_db.items():
         result.update({
-            key: value.get("email")
+            key:
+                {
+                    "email": value.get("email"),
+                    "request_dates": value.get("request_dates")
+                }
         })
     return result
 
