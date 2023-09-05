@@ -63,6 +63,7 @@ def get_running_processes():
 
 @app.delete("/kill_process", status_code=204)
 def kill_running_process(process_number):
+    print(temp_db)
     if process_number not in temp_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="email not found")
     process = temp_db.get(process_number)
