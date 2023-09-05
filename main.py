@@ -62,7 +62,7 @@ def get_running_processes():
 
 
 @app.delete("/kill_process", status_code=204)
-def kill_running_process(process_number):
+def kill_running_process(process_number: int):
     print(type(process_number))
     print(temp_db)
     if process_number not in temp_db:
