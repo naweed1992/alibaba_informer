@@ -36,7 +36,8 @@ def send_mail_if_ticket_available(form_data: SearchConfig):
     temp_db.update({
         process.pid: {
             "process": process,
-            "email": obj.get("target_mail")
+            "email": obj.get("target_mail"),
+            "request_dates": request_dates
         }
     })
     return True
@@ -66,7 +67,6 @@ def get_running_processes():
 
 @app.delete("/kill_process", status_code=204)
 def kill_running_process(process_number: int):
-    print(temp_db)
     if process_number not in temp_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="email not found")
     process = temp_db[process_number]["process"]
