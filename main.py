@@ -56,7 +56,7 @@ def get_running_processes():
     result = dict()
     for key, value in temp_db.items():
         result.update({
-            key: value.pid
+            key.pid: value
         })
     return result
 
