@@ -56,14 +56,13 @@ def get_running_processes():
     result = dict()
     for key, value in temp_db.items():
         result.update({
-            key.pid: value
+            key: value
         })
     return result
 
 
 @app.delete("/kill_process", status_code=204)
-def kill_running_process(process_):
-    process_number = process_.pid
+def kill_running_process(process_number):
     if process_number not in temp_db:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="email not found")
     process = temp_db.get(process_number)
